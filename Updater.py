@@ -1,8 +1,9 @@
 proj = 'Updater'
-ver = '1.0.1'
+ver = '1.0.2'
 
 while True:
 
+    # -==========[ Update code ]==========-
     # Updater: Used to check for new releases on GitHub
     # github.com/smcclennon/Updater
     import os  # detecting OS type (nt, posix, java), clearing console window, restart the script
@@ -54,12 +55,14 @@ while True:
         except:  # If updating fails 3 times
             latest = '0'
     if semver(latest) > semver(ver):
+        if os.name == 'nt': ctypes.windll.kernel32.SetConsoleTitleW(f'   == {proj} v{ver} ==   Update available: {ver} -> {latest}')
         print('Update available!      ')
         print(f'Latest Version: v{latest}\n')
         for release in releases:
             print(f'{release[0]}:\n{release[1]}\n')
         confirm = input(str('Update now? [Y/n] ')).upper()
         if confirm != 'N':
+            if os.name == 'nt': ctypes.windll.kernel32.SetConsoleTitleW(f'   == {proj} v{ver} ==   Installing updates...')
             print(f'Downloading {proj} v{latest}...')
             urllib.request.urlretrieve(ddl, os.path.basename(__file__))  # download the latest version to cwd
             import sys; sys.stdout.flush()  # flush any prints still in the buffer
@@ -67,10 +70,11 @@ while True:
             os.system(f'"{__file__}"' if os.name == 'nt' else f'python3 "{__file__}"')
             import time; time.sleep(0.2)
             quit()
-
-
-
     if os.name == 'nt': ctypes.windll.kernel32.SetConsoleTitleW(f'   == {proj} v{ver} ==')
+    # -==========[ Update code ]==========-
+
+
+
     print(f'{proj} v{ver}             ')
     print('\nThis script serves no purpose other than to update itself.')
     print('The code contained within this script is used to update many of my projects')
