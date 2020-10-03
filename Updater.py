@@ -9,16 +9,19 @@ def update():
     # -==========[ Update code ]==========-
     # Updater: Used to check for new releases on GitHub
     # github.com/smcclennon/Updater
+
+    # ===[ Constant Variables ]===
     updater = {
-        "updater_ver": "2.0.1",
         "proj": meta["proj"],
         "proj_id": meta["proj_id"],
         "current_ver": meta["ver"]
     }
 
+    # ===[ Changing code ]===
+    updater["updater_ver"] = "2.0.2"
     import os  # detecting OS type (nt, posix, java), clearing console window, restart the script
     from distutils.version import LooseVersion as semver  # as semver for readability
-    import urllib.request, json  # load and parse the GitHub API
+    import urllib.request, json  # load and parse the GitHub API, download updates
     import platform  # Consistantly detect MacOS
     import traceback  # Printing errors
 
