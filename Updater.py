@@ -87,7 +87,7 @@ def update():
             os.rename(os.path.basename(__file__)+'.update_tmp', os.path.basename(__file__))
             os.remove(os.path.basename(__file__)+'.old')
             os.system('cls||clear')  # Clear console window
-            os.system(os.path.basename(__file__)+" 1")
+            os.system('"'+os.path.basename(__file__)+'" 1')
             quit()
     # -==========[ Update code ]==========-
 
