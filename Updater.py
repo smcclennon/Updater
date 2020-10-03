@@ -79,7 +79,10 @@ def update():
         for release in changelog[::-1]:  # Step backwards, print latest patch notes last
             print(f'{release[0]}:\n{release[1]}\n')
 
-        confirm = input(str('Update now? [Y/n] ')).upper()
+        try:
+            confirm = input(str('Update now? [Y/n] ')).upper()
+        except KeyboardInterrupt:
+            confirm = 'N'
         if confirm != 'N':
             print(f'Downloading new file...')
             urllib.request.urlretrieve(update_api["project"][updater["proj_id"]]["github_api"]["latest_release"]["release_download"], os.path.basename(__file__)+'.update_tmp')  # download the latest version to cwd
