@@ -71,9 +71,10 @@ def update():
                     changelog.append([release["tag_name"], release["body"]])
                 else:
                     break  # Stop parsing patch notes after the current version has been met
-            except:  # Incorrect version format + semver causes errors (Example: semver('Build-1'))
-                traceback.print_exc()
+            except TypeError:  # Incorrect version format + semver causes errors (Example: semver('Build-1'))
                 pass  # Skip/do nothing
+            except:  # Anything else, soft fail
+                traceback.print_exc()
 
         for release in changelog[::-1]:  # Step backwards, print latest patch notes last
             print(f'{release[0]}:\n{release[1]}\n')
