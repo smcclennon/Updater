@@ -1,7 +1,7 @@
 meta = {
     "proj": "Updater",
     "proj_id": "5",
-    "ver": "2.0.0"
+    "ver": "2.0.1"
 }
 
 
@@ -10,7 +10,7 @@ def update():
     # Updater: Used to check for new releases on GitHub
     # github.com/smcclennon/Updater
     updater = {
-        "updater_ver": "2.0.0",
+        "updater_ver": "2.0.1",
         "proj": meta["proj"],
         "proj_id": meta["proj_id"],
         "current_ver": meta["ver"]
@@ -60,7 +60,7 @@ def update():
                 print('Error encountered whilst checking for updates. Full traceback below...')
                 traceback.print_exc()
 
-    if semver(github_releases[0]['tag_name'].replace('v', '')) > semver(updater["current_ver"]):
+    if github_releases != [] and semver(github_releases[0]['tag_name'].replace('v', '')) > semver(updater["current_ver"]):
         print('Update available!      ')
         print(f'Latest Version: {github_releases[0]["tag_name"]}\n')
 
