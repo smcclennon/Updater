@@ -1,7 +1,12 @@
-meta = {
-    "proj": "Updater",
-    "proj_id": "5",
-    "ver": "2.0.1"
+# Updater - update code for my Python projects
+# github.com/smcclennon/updater
+
+data = {
+    "meta": {
+        "proj": "Updater",
+        "proj_id": "5",
+        "ver": "2.0.2"
+    }
 }
 
 
@@ -12,9 +17,9 @@ def update():
 
     # ===[ Constant Variables ]===
     updater = {
-        "proj": meta["proj"],
-        "proj_id": meta["proj_id"],
-        "current_ver": meta["ver"]
+        "proj": data["meta"]["proj"],
+        "proj_id": data["meta"]["proj_id"],
+        "current_ver": data["meta"]["ver"]
     }
 
     # ===[ Changing code ]===
