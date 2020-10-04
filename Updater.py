@@ -5,7 +5,7 @@ data = {
     "meta": {
         "proj": "Updater",
         "proj_id": "5",
-        "ver": "2.0.2"
+        "ver": "2.0.3"
     }
 }
 
@@ -23,7 +23,7 @@ def update():
     }
 
     # ===[ Changing code ]===
-    updater["updater_ver"] = "2.0.2"
+    updater["updater_ver"] = "2.0.3"
     import os  # detecting OS type (nt, posix, java), clearing console window, restart the script
     from distutils.version import LooseVersion as semver  # as semver for readability
     import urllib.request, json  # load and parse the GitHub API, download updates
