@@ -92,7 +92,7 @@ def update():
         except KeyboardInterrupt:
             confirm = 'N'
         if confirm != 'N':
-            print(f'Downloading new file...')
+            print('Downloading new file...')
             urllib.request.urlretrieve(update_api["project"][updater["proj_id"]]["github_api"]["latest_release"]["release_download"], os.path.basename(__file__)+'.update_tmp')  # download the latest version to cwd
 
             os.rename(os.path.basename(__file__), os.path.basename(__file__)+'.old')
