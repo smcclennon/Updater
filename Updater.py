@@ -102,7 +102,7 @@ def update():
             if os.name == 'nt':
                 os.system('"'+os.path.basename(__file__)+'" 1')
             else:
-                os.system('python3 "'+os.path.basename(__file__)+'" || python2 "'+os.path.basename(__file__)+'"')
+                os.system('python3 "'+os.path.basename(__file__)+'" || python "'+os.path.basename(__file__)+'"')
             quit()
     # -==========[ Update code ]==========-
 
