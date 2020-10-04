@@ -109,7 +109,7 @@ def update():
 
 while True:
     update()
-    print(f'{meta["proj"]} v{meta["ver"]}             ')
+    print(f'{data["meta"]["proj"]} v{data["meta"]["ver"]}             ')
     print('\nThis script serves no purpose other than to update itself.')
     print('The code contained within this script is used to update many of my projects')
 
