@@ -5,7 +5,7 @@ data = {
     "meta": {
         "proj": "Updater",
         "proj_id": "5",
-        "ver": "2.0.2"
+        "ver": "2.0.3"
     }
 }
 
@@ -23,7 +23,7 @@ def update():
     }
 
     # ===[ Changing code ]===
-    updater["updater_ver"] = "2.0.2"
+    updater["updater_ver"] = "2.0.3"
     import os  # detecting OS type (nt, posix, java), clearing console window, restart the script
     from distutils.version import LooseVersion as semver  # as semver for readability
     import urllib.request, json  # load and parse the GitHub API, download updates
@@ -92,7 +92,7 @@ def update():
         except KeyboardInterrupt:
             confirm = 'N'
         if confirm != 'N':
-            print(f'Downloading new file...')
+            print('Downloading new file...')
             urllib.request.urlretrieve(update_api["project"][updater["proj_id"]]["github_api"]["latest_release"]["release_download"], os.path.basename(__file__)+'.update_tmp')  # download the latest version to cwd
 
             os.rename(os.path.basename(__file__), os.path.basename(__file__)+'.old')
@@ -102,14 +102,14 @@ def update():
             if os.name == 'nt':
                 os.system('"'+os.path.basename(__file__)+'" 1')
             else:
-                os.system('python3 "'+os.path.basename(__file__)+'" || python2 "'+os.path.basename(__file__)+'"')
+                os.system('python3 "'+os.path.basename(__file__)+'" || python "'+os.path.basename(__file__)+'"')
             quit()
     # -==========[ Update code ]==========-
 
 
 while True:
     update()
-    print(f'{meta["proj"]} v{meta["ver"]}             ')
+    print(f'{data["meta"]["proj"]} v{data["meta"]["ver"]}             ')
     print('\nThis script serves no purpose other than to update itself.')
     print('The code contained within this script is used to update many of my projects')
 
