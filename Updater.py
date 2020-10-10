@@ -5,7 +5,7 @@ data = {
     "meta": {
         "proj": "Updater",
         "proj_id": "5",
-        "ver": "2.0.3"
+        "ver": "2.0.4"
     }
 }
 
@@ -23,7 +23,7 @@ def update():
     }
 
     # ===[ Changing code ]===
-    updater["updater_ver"] = "2.0.3"
+    updater["updater_ver"] = "2.0.4"
     import os  # detecting OS type (nt, posix, java), clearing console window, restart the script
     from distutils.version import LooseVersion as semver  # as semver for readability
     import urllib.request, json  # load and parse the GitHub API, download updates
@@ -43,8 +43,8 @@ def update():
             # Handle target environment that doesn't support HTTPS verification
             ssl._create_default_https_context = _create_unverified_https_context
 
-    print('Checking for updates...', end='\r')
     for i in range(3):  # Try to retry the update up to 3 times if an error occurs
+        print(f'Checking for updates...({i+1})', end='\r')
         try:
             with urllib.request.urlopen("https://smcclennon.github.io/api/v2/update.json") as update_api:  # internal api
                 update_api = json.loads(update_api.read().decode())
@@ -81,6 +81,8 @@ def update():
                     break  # Stop parsing patch notes after the current version has been met
             except TypeError:  # Incorrect version format + semver causes errors (Example: semver('Build-1'))
                 pass  # Skip/do nothing
+            except KeyboardInterrupt:
+                return  # Exit the function
             except:  # Anything else, soft fail
                 traceback.print_exc()
 
@@ -93,33 +95,42 @@ def update():
             confirm = 'N'
         if confirm != 'N':
             print('Downloading new file...')
-            urllib.request.urlretrieve(update_api["project"][updater["proj_id"]]["github_api"]["latest_release"]["release_download"], os.path.basename(__file__)+'.update_tmp')  # download the latest version to cwd
-
+            try:
+                urllib.request.urlretrieve(update_api["project"][updater["proj_id"]]["github_api"]["latest_release"]["release_download"], os.path.basename(__file__)+'.update_tmp')  # download the latest version to cwd
+            except KeyboardInterrupt:
+                return  # Exit the function
             os.rename(os.path.basename(__file__), os.path.basename(__file__)+'.old')
             os.rename(os.path.basename(__file__)+'.update_tmp', os.path.basename(__file__))
             os.remove(os.path.basename(__file__)+'.old')
             os.system('cls||clear')  # Clear console window
             if os.name == 'nt':
-                os.system('"'+os.path.basename(__file__)+'" 1')
+                os.system('"'+os.path.basename(__file__)+'" 1')  # Open the new file on Windows
             else:
-                os.system('python3 "'+os.path.basename(__file__)+'" || python "'+os.path.basename(__file__)+'"')
+                os.system('python3 "'+os.path.basename(__file__)+'" || python "'+os.path.basename(__file__)+'"')  # Open the new file on Linux/MacOS
             quit()
     # -==========[ Update code ]==========-
 
 
 while True:
     update()
-    print(f'{data["meta"]["proj"]} v{data["meta"]["ver"]}             ')
-    print('\nThis script serves no purpose other than to update itself.')
-    print('The code contained within this script is used to update many of my projects')
+    try:
+        print(f'{data["meta"]["proj"]} v{data["meta"]["ver"]}             ')
+        print('\nThis script serves no purpose other than to update itself.')
+        print('The code contained within this script is used to update many of my projects')
 
 
-    print('\nYou can demo the updater functionality by typing in a version value and attempting to check for updates')
-    print('This script may fail to update if it is already the latest version for these reasons:')
-    print('    - The update code deletes the old version/file, however if the old file has the same filename as the newest version, it will not be deleted')
-    print('    - To solve this, try renaming this python file to something else')
+        print('\nYou can demo the updater functionality by typing in a version value and attempting to check for updates')
+        print('This script may fail to update if it is already the latest version for these reasons:')
+        print('    - The update code deletes the old version/file, however if the old file has the same filename as the newest version, it will not be deleted')
+        print('    - To solve this, try renaming this python file to something else')
 
-    print('\n\nEnter your desired current-version-number to proceed with updating (leave blank for current version)')
-    print('If your version number doesn\'t conform to Semver (1.2.3), the update may fail and the script will most likely crash')
-    userVer = str(input('\nver = '))
-    meta["ver"] = userVer if userVer != '' else exit()
+        print('\n\nEnter your desired current-version-number to proceed with updating (leave blank for current version)')
+        print('If your version number doesn\'t conform to Semver (1.2.3), the update may fail and the script will most likely crash')
+        userVer = str(input('\ncurrent_version = '))
+        if userVer != '':
+            data["meta"]["ver"] = userVer
+    except KeyboardInterrupt:
+        exit()
+    except:
+        traceback.print_exc()
+        input('\n\nPress enter to continue')
