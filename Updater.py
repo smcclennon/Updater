@@ -43,8 +43,8 @@ def update():
             # Handle target environment that doesn't support HTTPS verification
             ssl._create_default_https_context = _create_unverified_https_context
 
-    print('Checking for updates...', end='\r')
     for i in range(3):  # Try to retry the update up to 3 times if an error occurs
+        print(f'Checking for updates...({i+1})', end='\r')
         try:
             with urllib.request.urlopen("https://smcclennon.github.io/api/v2/update.json") as update_api:  # internal api
                 update_api = json.loads(update_api.read().decode())
