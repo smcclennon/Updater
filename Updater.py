@@ -126,4 +126,4 @@ while True:
     print('\n\nEnter your desired current-version-number to proceed with updating (leave blank for current version)')
     print('If your version number doesn\'t conform to Semver (1.2.3), the update may fail and the script will most likely crash')
     userVer = str(input('\nver = '))
-    meta["ver"] = userVer if userVer != '' else exit()
+    data["meta"]["ver"] = userVer if userVer != '' else exit()
