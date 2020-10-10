@@ -113,17 +113,24 @@ def update():
 
 while True:
     update()
-    print(f'{data["meta"]["proj"]} v{data["meta"]["ver"]}             ')
-    print('\nThis script serves no purpose other than to update itself.')
-    print('The code contained within this script is used to update many of my projects')
+    try:
+        print(f'{data["meta"]["proj"]} v{data["meta"]["ver"]}             ')
+        print('\nThis script serves no purpose other than to update itself.')
+        print('The code contained within this script is used to update many of my projects')
 
 
-    print('\nYou can demo the updater functionality by typing in a version value and attempting to check for updates')
-    print('This script may fail to update if it is already the latest version for these reasons:')
-    print('    - The update code deletes the old version/file, however if the old file has the same filename as the newest version, it will not be deleted')
-    print('    - To solve this, try renaming this python file to something else')
+        print('\nYou can demo the updater functionality by typing in a version value and attempting to check for updates')
+        print('This script may fail to update if it is already the latest version for these reasons:')
+        print('    - The update code deletes the old version/file, however if the old file has the same filename as the newest version, it will not be deleted')
+        print('    - To solve this, try renaming this python file to something else')
 
-    print('\n\nEnter your desired current-version-number to proceed with updating (leave blank for current version)')
-    print('If your version number doesn\'t conform to Semver (1.2.3), the update may fail and the script will most likely crash')
-    userVer = str(input('\nver = '))
-    data["meta"]["ver"] = userVer if userVer != '' else exit()
+        print('\n\nEnter your desired current-version-number to proceed with updating (leave blank for current version)')
+        print('If your version number doesn\'t conform to Semver (1.2.3), the update may fail and the script will most likely crash')
+        userVer = str(input('\ncurrent_version = '))
+        if userVer != '':
+            data["meta"]["ver"] = userVer
+    except KeyboardInterrupt:
+        exit()
+    except:
+        traceback.print_exc()
+        input('\n\nPress enter to continue')
