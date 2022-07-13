@@ -19,11 +19,11 @@ def update():
     updater = {
         "proj": data["meta"]["proj"],
         "proj_id": data["meta"]["proj_id"],
-        "current_ver": data["meta"]["ver"]
+        "current_ver": data["meta"]["ver"],
+        "updater_ver": "2.0.4",
     }
 
-    # ===[ Changing code ]===
-    updater["updater_ver"] = "2.0.4"
+
     import os  # detecting OS type (nt, posix, java), clearing console window, restart the script
     from distutils.version import LooseVersion as semver  # as semver for readability
     import urllib.request, json  # load and parse the GitHub API, download updates
@@ -60,13 +60,13 @@ def update():
             break
         except Exception as e:  # If updating fails 3 times
             github_releases = {0: {'tag_name': 'v0.0.0'}}
-            if str(e) == "HTTP Error 404: Not Found":  # No releases found
+            if str(e) in {
+                "HTTP Error 404: Not Found",
+                '<urlopen error [Errno 11001] getaddrinfo failed>',
+            }:
                 break
-            elif str(e) == '<urlopen error [Errno 11001] getaddrinfo failed>':  # Cannot connect to website
-                break
-            else:
-                print('Error encountered whilst checking for updates. Full traceback below...')
-                traceback.print_exc()
+            print('Error encountered whilst checking for updates. Full traceback below...')
+            traceback.print_exc()
 
     if github_releases != [] and semver(github_releases[0]['tag_name'].replace('v', '')) > semver(updater["current_ver"]):
         print('Update available!      ')
@@ -83,25 +83,32 @@ def update():
                 pass  # Skip/do nothing
             except KeyboardInterrupt:
                 return  # Exit the function
-            except:  # Anything else, soft fail
-                traceback.print_exc()
-
         for release in changelog[::-1]:  # Step backwards, print latest patch notes last
             print(f'{release[0]}:\n{release[1]}\n')
 
         try:
-            confirm = input(str('Update now? [Y/n] ')).upper()
+            confirm = input('Update now? [Y/n] ').upper()
         except KeyboardInterrupt:
             confirm = 'N'
         if confirm != 'N':
             print('Downloading new file...')
             try:
-                urllib.request.urlretrieve(update_api["project"][updater["proj_id"]]["github_api"]["latest_release"]["release_download"], os.path.basename(__file__)+'.update_tmp')  # download the latest version to cwd
+                urllib.request.urlretrieve(
+                    update_api["project"][updater["proj_id"]]["github_api"][
+                        "latest_release"
+                    ]["release_download"],
+                    f'{os.path.basename(__file__)}.update_tmp',
+                )
+
             except KeyboardInterrupt:
                 return  # Exit the function
-            os.rename(os.path.basename(__file__), os.path.basename(__file__)+'.old')
-            os.rename(os.path.basename(__file__)+'.update_tmp', os.path.basename(__file__))
-            os.remove(os.path.basename(__file__)+'.old')
+            os.rename(os.path.basename(__file__), f'{os.path.basename(__file__)}.old')
+            os.rename(
+                f'{os.path.basename(__file__)}.update_tmp',
+                os.path.basename(__file__),
+            )
+
+            os.remove(f'{os.path.basename(__file__)}.old')
             os.system('cls||clear')  # Clear console window
             if os.name == 'nt':
                 os.system('"'+os.path.basename(__file__)+'" 1')  # Open the new file on Windows
@@ -131,6 +138,3 @@ while True:
             data["meta"]["ver"] = userVer
     except KeyboardInterrupt:
         exit()
-    except:
-        traceback.print_exc()
-        input('\n\nPress enter to continue')
